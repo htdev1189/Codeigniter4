@@ -15,7 +15,7 @@
         <?php endif ?>
 
         <?php if (!empty(session()->getFlashdata('error'))) : ?>
-            <div class="alert alert-success">
+            <div class="alert alert-danger">
                 <?= session()->getFlashdata('error'); ?>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
