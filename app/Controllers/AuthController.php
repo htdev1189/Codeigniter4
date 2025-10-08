@@ -15,7 +15,7 @@ class AuthController extends BaseController
 {
     // url -> router_to
     // form -> set_value 
-    protected $helpers = ['url', 'form', 'CIMail'];
+    protected $helpers = ['url', 'form', 'CIMail', 'CIFunction'];
 
     public function loginForm()
     {
@@ -166,7 +166,7 @@ class AuthController extends BaseController
         if ($checkToken) {
             // neu ton tai trong db
             // kiem tra expired
-            $diffMins = Carbon::createFromFormat('Y-m-d h:i:s', $checkToken->created_at)->diffInMinutes(Carbon::now());
+            $diffMins = Carbon::createFromFormat('Y-m-d H:i:s', $checkToken->created_at)->diffInMinutes(Carbon::now());
             // neu lon hon 15 phut 
             if ($diffMins > 1500000) {
                 // thong bao token het han

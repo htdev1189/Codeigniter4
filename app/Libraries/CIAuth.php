@@ -2,6 +2,8 @@
 
 namespace App\Libraries;
 
+use App\Models\User;
+
 class CIAuth{
     public static function setCIAuth($result){
         $session = session();
@@ -43,6 +45,16 @@ class CIAuth{
     // get user
     public static function user(){
         $session = session();
-        return $session->get('userData');       
+        if($session->has('logged_id')){
+            if ($session->has('userData')) {
+                $user = new User();
+                return $user->asObject()->where('id', CIAuth::id())->first();                
+            } else {
+                # code...
+            }
+            
+        }else{
+            return null;
+        }
     }
 }

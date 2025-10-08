@@ -1,7 +1,14 @@
 ## Filter
+
 ```bash
 # create
 php spark make:filter CIFilter
+
+# tich hop vao file filters.php
+public array $aliases = [
+        -----
+        'cifilter'      => CIFilter::class,
+];
 
 # add to router
 $routes->group('', ['filter' => '<filterName>:<Argumments>'], static function($routes){});

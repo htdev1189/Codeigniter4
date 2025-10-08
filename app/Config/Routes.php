@@ -16,6 +16,9 @@ $routes->group('admin',static function ($routes){
     $routes->group('', ['filter' => 'cifilter:auth'], static function($routes){
         $routes->get('home', 'AdminController::index', ['as' => 'admin.home']);
         $routes->get('logout', 'AdminController::logoutHandler', ['as' => 'admin.logout']);
+
+        // profile
+        $routes->get('profile', 'AdminController::profile',['as' => 'admin.profile']);
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);
