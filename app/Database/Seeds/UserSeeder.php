@@ -9,9 +9,9 @@ class UserSeeder extends Seeder
     public function run()
     {
         $data = [
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'username' => 'admin',
+            'name' => 'hoang tuan',
+            'email' => 'htuan1189@gmail.com',
+            'username' => 'htuan1189',
             'password' => password_hash('123456',PASSWORD_BCRYPT)
         ];
 

@@ -66,14 +66,14 @@
             </div>
             <div class="col-6">
                 <div class="forgot-password">
-                    <a href="forgot-password.html">Forgot Password</a>
+                    <a href="<?= route_to('admin.forgot.form') ?>">Forgot Password</a>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
                 <div class="input-group mb-0">
-                    <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
                 </div>
 
             </div>
