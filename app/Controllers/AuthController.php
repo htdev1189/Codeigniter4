@@ -59,7 +59,7 @@ class AuthController extends BaseController
                 $check_password = Hash::check($this->request->getVar('password'), $userInfo['password']);
                 if ($check_password) {
                     CIAuth::setCIAuth($userInfo); // important
-                    return redirect('admin.home');
+                    return redirect()->route('admin.home');
                 } else {
                     // redirect ve 1 trang, tra lai flash session, tra lai $POST
                     return redirect()->route('admin.login.form')->with('error', 'Wrong infomation')->withInput();

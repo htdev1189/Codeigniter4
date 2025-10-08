@@ -6,7 +6,7 @@ class CIAuth{
     public static function setCIAuth($result){
         $session = session();
         $array = [
-            'logged' => true
+            'logged_id' => true
         ];
         $userData = $result;
         $session->set('userData',$userData);

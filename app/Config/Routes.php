@@ -10,12 +10,14 @@ $routes->get('/', 'Home::index');
 // admin route group
 $routes->group('admin',static function ($routes){
     // sub group
-    $routes->group('', [], static function($routes){
-        // $routes->view('example-page', 'example-page');
+    /**
+     * ['filter' => 'cifilter:guest'] ==> ['filter' => 'filterName define in Filters.php : arguments check']
+     */
+    $routes->group('', ['filter' => 'cifilter:auth'], static function($routes){
         $routes->get('home', 'AdminController::index', ['as' => 'admin.home']);
+        $routes->get('logout', 'AdminController::logoutHandler', ['as' => 'admin.logout']);
     });
-    $routes->group('', [], static function($routes){
-        // $routes->view('example-auth', 'example-auth');
+    $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);
         $routes->post('login','AuthController::loginHandle',['as' => 'admin.login.handle']);
     });
