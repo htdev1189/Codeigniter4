@@ -20,5 +20,13 @@ $routes->group('admin',static function ($routes){
     $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);
         $routes->post('login','AuthController::loginHandle',['as' => 'admin.login.handle']);
+
+        // forgot password
+        $routes->get('forgot-password','AuthController::forgotPassword',['as' => 'admin.forgot.form']);
+        $routes->post('forgot-password','AuthController::forgotHandle',['as' => 'admin.forgot.handle']);
+        $routes->get('password/reset/(:any)','AuthController::resetPassword/$1',['as' => 'admin.reset-password']);
+        // truyen router_to kèm theo token
+        // 
+        $routes->post('reset-pasword-handler/(:any)','AuthController::resetPasswordhandler/$1',['as' => 'admin.reset-password-handler']);
     });
 });
