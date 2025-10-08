@@ -9,6 +9,7 @@ if (! function_exists('sendEmail')) {
     {
         $mail = new PHPMailer(true);
         try {
+            // $mail->SMTPDebug = 1;  
             $mail->isSMTP();
             $mail->Host       = getenv('EMAIL_HOST');
             $mail->SMTPAuth   = true;
@@ -24,7 +25,7 @@ if (! function_exists('sendEmail')) {
             $mail->Subject = $emailConfig['mail_subject'];
             $mail->Body    = $emailConfig['mail_body'];
 
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
             if ($mail->send()) {
                 return true;
             } else {
@@ -70,8 +71,8 @@ if (! function_exists('sendEmail')) {
             // }
             // echo 'Message has been sent';
         } catch (Exception $e) {
-            // dd($e->getMessage());
-            // echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+             dd($e->getMessage());
+            //  echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             return false;
         }
     }
