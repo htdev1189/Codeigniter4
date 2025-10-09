@@ -24,3 +24,9 @@ $isValidation = $this->validate([
 if ($isValidation) {
     echo "validated";
 }
+
+# rules
+
+is_unique[users.email] => su dung trong truong hop them moi, tránh sự trùng lặp
+
+is_unique[users.email,id,{id}] => su dung trong truong hop update, 
