@@ -55,7 +55,8 @@
                             <div class="tab-pane fade show active" id="personal_details" role="tabpanel">
                                 <div class="pd-20">
                                     <form action="<?= route_to('update-personal-details') ?>" method="post" id="personal_details_form">
-                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" id="change-password-token">
+
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
@@ -87,7 +88,7 @@
                             <!-- Tasks Tab start -->
                             <div class="tab-pane fade" id="change_password" role="tabpanel">
                                 <div class="pd-20 profile-task-wrap">
-                                    <form action="" method="post" id="change_password_form">
+                                    <form action="<?= route_to('change-pasword') ?>" method="post" id="change_password_form">
                                         <?= csrf_field() ?>
                                         <div class="row">
                                             <div class="col-md-4">
@@ -131,8 +132,8 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('script') ?>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> -->
 
 
 <script>
@@ -195,5 +196,84 @@
             alert(message);
           }
       });   
+
+
+    //   change password by jquery
+    $("#change_password_form").on('submit',function(e){
+        e.preventDefault(); // ngăn ngừa redirect sau khi ấn submit
+
+        /**
+         * var form = this; 
+         * đối tượng DOM thật (HTML element), lúc này có thể lấy các attr ra
+         * form.action, form.method, form.elements
+         * 
+         * var form = $(this)
+         * nó sẽ tạo ra 1 object jQuery
+         * lúc này đây có thể sử dụng các phương thức trong jquery
+         * form.attr('action'), form.find('input'), form.serialize(), form.submit()
+         */
+        var form = this; // ở đây nên dùng cái này vì FormData yêu cầu đối số lá Html element
+
+        var formData = new FormData(form);
+        
+        $.ajax({
+            url:form.action,
+            method:form.method,
+            data:formData,
+            // data:new FormData(form), // formData xử lý form có file, phức tạp hơn so với form.serialize()
+            processData:false,
+
+            /**
+             * contentType: false,
+             * quan trọng,
+             * Nếu không thêm contentType: false,
+             * jQuery sẽ gán header Content-Type: application/x-www-form-urlencoded,
+             * làm cho PHP không parse được $_POST → dẫn đến validate báo lỗi “required”.
+             */
+            contentType: false,
+
+            dataType:'json',
+            cache:false,
+            beforeSend:function(){
+                toastr.remove(); // remove toastr
+                $(form).find('span.error-text').text(''); // find span error end empty text
+            },
+            success:function(response){
+                // update lai token
+                $("#change-password-token").val(response.token)
+
+                /**
+                 * giả sử dữ liệu từ trong php trả ra
+                 * return $this->response->setJSON([
+                                    'status' => 'error',
+                                    'errors' => [
+                                        'name' => 'Tên không được để trống',
+                                        'email' => 'Email không hợp lệ',
+                                    ]
+                                ]);
+
+                 */
+                if (!$.isEmptyObject(response.errors)) {
+                    $.each(response.errors, function(key, value){
+                        $(form).find('span.'+key+'_error').text(value);
+                    });
+                }else{
+                    // check status
+                    if (response.status == 1) {
+                        toastr.success(response.msg);
+                    }else{
+                        toastr.error(response.msg);
+                    }
+                }
+
+            },
+            error:function(){
+                alert("Lỗi hệ thống, vui lòng thử lại!");
+            }
+        });
+                
+    });
+
+
 </script>
 <?= $this->endSection() ?>

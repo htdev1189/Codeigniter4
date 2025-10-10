@@ -41,6 +41,9 @@
 
 	<link rel="stylesheet" href="<?= base_url('util/ijaboCropTool/ijaboCropTool.min.css') ?>">
 
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	
+
 	<!-- customer style -->
 	<?= $this->renderSection('stylesheets') ?>
 </head>
@@ -70,12 +73,8 @@
 	<div class="main-container">
 		<div class="pd-ltr-20 xs-pd-20-10">
 			<div class="min-height-200px">
-
-				<div class="pd-20 bg-white border-radius-4 box-shadow mb-30">
-					<?= $this->renderSection('content') ?>
-				</div>
+				<?= $this->renderSection('content'); ?>
 			</div>
-			<?= $this->include('/backend/inc/footer'); ?>
 		</div>
 	</div>
 
@@ -85,9 +84,10 @@
 	<script src="/backend/vendors/scripts/process.js"></script>
 	<script src="/backend/vendors/scripts/layout-settings.js"></script>
 
-	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 	<script src="<?= base_url('util/ijaboCropTool/ijaboCropTool.min.js') ?>"></script>
-	
+
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 	<?= $this->renderSection('script') ?>
 </body>
 

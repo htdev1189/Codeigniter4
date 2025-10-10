@@ -51,11 +51,10 @@
                 </li>
                 <li>
                     <a
-                        href="https://dropways.github.io/deskapp-free-single-page-website-template/"
-                        target="_blank"
+                        href="<?= route_to('admin.setting') ?>"
                         class="dropdown-toggle no-arrow">
                         <span class="micon bi bi-layout-text-window-reverse"></span>
-                        <span class="mtext">Genenal</span>
+                        <span class="mtext">Setting</span>
                     </a>
                 </li>
             </ul>
