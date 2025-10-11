@@ -433,7 +433,56 @@ class AdminController extends BaseController
 
 
     // update social
-    public function updateSocial(){
-        
+    public function updateSocial()
+    {
+        // validate
+        $rules = [
+            'social.facebook' => [
+                'rules' => 'permit_empty|ValidURL[]',
+                'errors' => [
+                    'valid_url' => 'URL không hợp lệ.'
+                ]
+            ]
+        ];
+
+        if ($this->validate($rules)) {
+
+            // cap nhat vao database
+
+            $setting = new Setting();
+            $currentSetting = $setting->asObject()->first();
+            $id = $currentSetting->id;
+
+            $social = $this->request->getVar('social');
+            $facebook = $social['facebook'] ?? null;
+            $zalo = $social['zalo'] ?? null;
+
+            $update_social = $setting->update($id, [
+                'blog_social' => [
+                    'facebook' => $facebook,
+                    'zalo' => $zalo
+                ]
+            ]);
+            if ($update_social) {
+                return $this->response->setJSON([
+                    'status' => 1,
+                    'msg'    => 'Update social success',
+                    'token'  => csrf_hash()
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'status' => 0,
+                    'msg'    => 'Update social failed',
+                    'token'  => csrf_hash()
+                ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'status' => 0,
+                'msg' => 'update general setting failed',
+                'errors' => $this->validator->getErrors(),
+                'token' => csrf_hash()
+            ]);
+        }
     }
 }

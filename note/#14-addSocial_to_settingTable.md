@@ -48,4 +48,27 @@ protected $casts = [
 
 // thực hiện submit form bằng ajax
 
+// chú ý validate chỗ này
+<input type="text" class="form-control" name="social[facebook]">
+<input type="text" class="form-control" name="social[zalo]">
+
+//permit_empty : Allows the field to receive an empty array,empty string, null or false.
+
+$rules = [
+    'social.facebook' => [
+        'rules' => 'permit_empty|valid_url',
+        'errors' => [
+            'valid_url' => 'Facebook URL không hợp lệ.'
+        ]
+    ]
+];
+
+// hoặc thiếp lập riêng hàm kiểm tra url
+php spark make:validation IsValidURL
+
+
+// ok tiếp tục,
+// ajax này chủ yếu là lấy mấy cái lỗi hoặc trạng thái chứ xử lý đã có controller nó lo cả
+
+
 ```

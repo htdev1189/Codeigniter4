@@ -116,20 +116,20 @@
             <div class="tab-pane fade" id="social_media" role="tabpanel">
                 <div class="pd-20">
                     <!-- social -->
-                     <form action="<?= route_to('admin.update.social') ?>" method="post">
-                        <input type="hidden" name="<?= csrf_token(); ?>" value="<?= csrf_hash() ?>">
+                     <form action="<?= route_to('admin.update.social') ?>" method="post" id="admin-update-social-form">
+                        <input type="hidden" name="<?= csrf_token(); ?>" value="<?= csrf_hash() ?>" id="admin-update-social-token">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Facebook</label>
-                                    <input type="text" class="form-control" name="social[facebook]">
+                                    <input type="text" class="form-control" name="social[facebook]" value="<?= get_setting()->blog_social->facebook?>">
                                     <span class="text-danger error-text social_facebook_error"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Zalo</label>
-                                    <input type="text" class="form-control" name="social[zalo]">
+                                    <input type="text" class="form-control" name="social[zalo]" value="<?= get_setting()->blog_social->zalo?>">
                                     <span class="text-danger error-text social_zalo_error"></span>
                                 </div>
                             </div>
@@ -151,6 +151,48 @@
 
 <?= $this->section('script') ?>
 <script>
+
+    // update social
+    $('#admin-update-social-form').on('submit', function(e){
+        e.preventDefault();
+
+        var form = this;
+        var dataForm = new FormData(form);
+
+        $.ajax({
+            url:form.action,
+            method:form.method,
+            data:dataForm,
+            processData:false,
+            contentType:false,//important
+            cache:false,
+            dataType:'json',
+            beforeSend:function(){
+                toastr.remove();
+                $(form).find("span.error-text").text('');
+            },
+            success:function(response){
+                // update token
+                $('#admin-update-social-token').val(response.token);
+                if (response.status === 1) {
+                    toastr.success(response.msg);
+                }else{
+                    toastr.error(response.msg);
+                    if(!$.isEmptyObject(response.errors)){
+                        $.each(response.errors, function(key,value){
+                            //social.zalo => social_zalo_error
+                            $(form).find('span.'+key.replace('.','_')+'_error').text(value);
+                        });
+                    }
+                }
+            },
+            error:function(){
+                console.log("error");
+            }
+        });
+    });
+
+
     $('#general-setting-form').on('submit', function(e) {
         e.preventDefault();
 
