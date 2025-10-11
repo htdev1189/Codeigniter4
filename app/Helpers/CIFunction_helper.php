@@ -34,7 +34,8 @@ if (! function_exists('get_setting')) {
                 'blog_keywords' => null,
                 'blog_description' => null,
                 'blog_logo' => null,
-                'blog_favicon' => null
+                'blog_favicon' => null,
+                'blog_social' => null,
             ];
             // insert to db
             $setting->save($data);
