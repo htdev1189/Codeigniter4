@@ -8,7 +8,10 @@ class Setting extends Model
 {
     protected $table            = 'settings';
     protected $primaryKey       = 'id';
-    
+    protected array $casts = [
+        'blog_social' => '?json'
+    ];
+
     protected $allowedFields    = [
         'blog_title',
         'blog_email',
@@ -16,11 +19,11 @@ class Setting extends Model
         'blog_keywords',
         'blog_description',
         'blog_logo',
-        'blog_favicon'
+        'blog_favicon',
+        'blog_social'
     ];
 
     protected $useTimestamps = true; // :) turn on
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
-
 }

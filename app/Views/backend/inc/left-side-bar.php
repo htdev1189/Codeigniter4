@@ -1,7 +1,7 @@
 <div class="left-side-bar">
     <div class="brand-logo">
         <a href="index.html">
-            <img src="/backend/vendors/images/deskapp-logo.svg" alt="" class="dark-logo" />
+            <img src="<?= base_url('images/setting/' . get_setting()->blog_logo) ?>" alt="" class="dark-logo" />
             <img
                 src="/backend/vendors/images/deskapp-logo-white.svg"
                 alt=""

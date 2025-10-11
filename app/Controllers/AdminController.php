@@ -403,7 +403,13 @@ class AdminController extends BaseController
                 $new_logo = 'UIMG' . date('Ymd') . uniqid() . '.' . $file->getExtension();
 
                 // di chuyển file
-                $file->move($uploadDir, $new_logo);
+                // $file->move($uploadDir, $new_logo);
+
+                // rezize and save
+                $image = service('image');
+                $uploadFile = $image->withFile($file)
+                    ->resize(257, 55)
+                    ->save($uploadDir . $new_logo);
 
                 // cập nhật DB
                 $setting->update($id, ['blog_logo' => $new_logo]);
@@ -423,5 +429,11 @@ class AdminController extends BaseController
                 ]);
             }
         }
+    }
+
+
+    // update social
+    public function updateSocial(){
+        
     }
 }

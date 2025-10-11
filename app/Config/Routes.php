@@ -25,6 +25,7 @@ $routes->group('admin',static function ($routes){
         $routes->get('setting', 'AdminController::setting', ['as' => 'admin.setting']);
         $routes->post('update-setting', 'AdminController::settingHandler', ['as' => 'admin.update.setting']);
         $routes->post('update-logo', 'AdminController::updateLogo', ['as' => 'admin.update.logo']);
+        $routes->post('update-social', 'AdminController::updateSocial', ['as' => 'admin.update.social']);
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);
