@@ -26,6 +26,12 @@ $routes->group('admin',static function ($routes){
         $routes->post('update-setting', 'AdminController::settingHandler', ['as' => 'admin.update.setting']);
         $routes->post('update-logo', 'AdminController::updateLogo', ['as' => 'admin.update.logo']);
         $routes->post('update-social', 'AdminController::updateSocial', ['as' => 'admin.update.social']);
+
+        // category
+        $routes->get('categories', 'CategoryController::index', ['as' => 'admin.category.list']);
+        $routes->get('categories-data', 'CategoryController::getData', ['as' => 'admin.category.data']);
+        $routes->get('categories-add', 'CategoryController::create', ['as' => 'admin.category.add']);
+        $routes->post('categories-add', 'CategoryController::store', ['as' => 'admin.category.add']);
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);
