@@ -32,6 +32,10 @@ $routes->group('admin',static function ($routes){
         $routes->get('categories-data', 'CategoryController::getData', ['as' => 'admin.category.data']);
         $routes->get('categories-add', 'CategoryController::create', ['as' => 'admin.category.add']);
         $routes->post('categories-add', 'CategoryController::store', ['as' => 'admin.category.add']);
+        $routes->post('category/delete/(:num)', 'CategoryController::delete/$1', ['as' => 'admin.category.delete']);
+        $routes->get('category/edit/(:num)', 'CategoryController::edit/$1', ['as' => 'admin.category.edit']);
+        $routes->post('category/update/(:num)', 'CategoryController::update/$1', ['as' => 'admin.category.update']);
+
     });
     $routes->group('', ['filter' => 'cifilter:guest'], static function($routes){
         $routes->get('login','AuthController::loginForm',['as' => 'admin.login.form']);

@@ -122,14 +122,14 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Facebook</label>
-                                    <input type="text" class="form-control" name="social[facebook]" value="<?= get_setting()->blog_social->facebook?>">
+                                    <input type="text" class="form-control" name="social[facebook]" value="<?= get_setting()->blog_social->facebook ?? '' ?>">
                                     <span class="text-danger error-text social_facebook_error"></span>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="">Zalo</label>
-                                    <input type="text" class="form-control" name="social[zalo]" value="<?= get_setting()->blog_social->zalo?>">
+                                    <input type="text" class="form-control" name="social[zalo]" value="<?= get_setting()->blog_social->zalo ?? '' ?>">
                                     <span class="text-danger error-text social_zalo_error"></span>
                                 </div>
                             </div>
