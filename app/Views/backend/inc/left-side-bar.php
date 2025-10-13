@@ -19,10 +19,19 @@
                         <span class="micon bi bi-house"></span><span class="mtext">Home</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="calendar.html" class="dropdown-toggle no-arrow">
                         <span class="micon bi bi-calendar4-week"></span><span class="mtext">Categories</span>
                     </a>
+                </li> -->
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-calendar4-week"></span><span class="mtext">Categories</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= route_to('admin.category.list') ?>">All category</a></li>
+                        <li><a href="<?= route_to('admin.category.add') ?>">Add category</a></li>
+                    </ul>
                 </li>
                 <li class="dropdown">
                     <a href="javascript:;" class="dropdown-toggle">
