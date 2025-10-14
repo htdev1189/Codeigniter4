@@ -79,7 +79,7 @@
 
 <script>
     $('#categoryTable').DataTable({
-        pageLength: 2,
+        // pageLength: 2,
         processing: true,
         serverSide: true,
         ajax: {

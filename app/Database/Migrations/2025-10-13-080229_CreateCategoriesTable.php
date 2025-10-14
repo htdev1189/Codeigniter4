@@ -24,8 +24,14 @@ class CreateCategoriesTable extends Migration
                 'type'=> 'VARCHAR',
                 'constraint'=> '255',
             ],
-            'created_at timestamp default current_timestamp',
-            'updated_at timestamp default current_timestamp on update current_timestamp'
+            'created_at' => [
+                'type' => 'DATETIME',
+                'null' => true,
+            ],
+            'updated_at' => [
+                'type'=> 'DATETIME',
+                'null'=> true,
+            ]
         ]);
 
         $this->forge->addKey('id', true);

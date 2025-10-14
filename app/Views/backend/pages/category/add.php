@@ -14,9 +14,9 @@
                             <span class="text-danger"><?= session()->getFlashdata('validation')->getError('name') ?></span>
                         <?php endif; ?>
                     <?php endif; ?>
-                        <?php if (session()->getFlashdata('error')) : ?>
-                            <span class="text-danger"><?= session()->getFlashdata('error') ?></span>
-                        <?php endif; ?>
+                    <?php if (session()->getFlashdata('error')) : ?>
+                        <span class="text-danger"><?= session()->getFlashdata('error') ?></span>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
