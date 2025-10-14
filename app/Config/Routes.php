@@ -30,12 +30,17 @@ $routes->group('admin',static function ($routes){
         // category
         $routes->get('categories', 'CategoryController::index', ['as' => 'admin.category.list']);
         $routes->get('categories-data', 'CategoryController::getData', ['as' => 'admin.category.data']);
-        $routes->get('categories-add', 'CategoryController::create', ['as' => 'admin.category.add']);
-        $routes->post('categories-add', 'CategoryController::store', ['as' => 'admin.category.add']);
+        $routes->get('category/add', 'CategoryController::create', ['as' => 'admin.category.add']);
+        $routes->post('category/add', 'CategoryController::store', ['as' => 'admin.category.add']);
         $routes->post('category/delete/(:num)', 'CategoryController::delete/$1', ['as' => 'admin.category.delete']);
         $routes->get('category/edit/(:num)', 'CategoryController::edit/$1', ['as' => 'admin.category.edit']);
         $routes->post('category/update/(:num)', 'CategoryController::update/$1', ['as' => 'admin.category.update']);
         $routes->post('category/restore/(:num)', 'CategoryController::restore/$1', ['as' => 'admin.category.restore']);
+
+        // posts
+        $routes->group('post', static function ($routes){
+            $routes->get('new-post', 'PostController::create', ['as' => 'admin.post.create']);
+        });
 
 
     });

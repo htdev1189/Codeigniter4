@@ -199,6 +199,7 @@ class CategoryController extends BaseController
                 $cat['id'],
                 esc($cat['name']),
                 esc($cat['slug']),
+                $this->CategoryService->getById($cat['id'])['parent_name'],
                 date('d/m/Y H:i:s', strtotime($cat['created_at'])),
                 $cat['updated_at'] ? date('d/m/Y H:i:s', strtotime($cat['updated_at'])) : '',
                 $editBtn . ' ' . $deleteBtn
@@ -219,7 +220,8 @@ class CategoryController extends BaseController
     {
         // Form thêm category
         return view('backend/pages/category/add', [
-            'pageTitle' => 'Create New Category'
+            'pageTitle' => 'Create New Category',
+            'categories' => $this->CategoryService->getAll()
         ]);
     }
 
@@ -261,9 +263,19 @@ class CategoryController extends BaseController
         // Form sửa
         try {
             $category = $this->CategoryService->getById($id);
-            return view('backend/pages/category/edit', ['category' => $category]);
+            return view('backend/pages/category/edit', [
+                'pageTitle' => "edit category",
+                'category' => $category,
+                'categories' => $this->CategoryService->getAll()
+            ]);
         } catch (PageNotFoundException $e) {
-            return redirect()->route('admin.category.list')->with('error', $e->getMessage());
+            // Hiển thị trang 404 mặc định của CI4
+            // return view('errors/html/error_404', [
+            //     'message' => $e->getMessage()
+            // ]);
+            // hiển thị theo định dạng khác
+            return view('backend/error/error-404');
+            // return redirect()->route('admin.category.list')->with('error', $e->getMessage());
         }
     }
 
@@ -289,6 +301,10 @@ class CategoryController extends BaseController
             $data = [
                 'name' => $this->request->getPost('name'),
                 'slug' => slugify($this->request->getPost('name')),
+                'parent_id' => $this->request->getPost('parent'),
+                'seo_title' => $this->request->getPost('seo_title'),
+                'seo_des' => $this->request->getPost('seo_des'),
+                'seo_keyword' => $this->request->getPost('seo_keyword'),
             ];
 
             $this->CategoryService->update($id, $data);
