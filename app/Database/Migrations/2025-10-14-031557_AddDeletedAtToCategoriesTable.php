@@ -18,6 +18,6 @@ class AddDeletedAtToCategoriesTable extends Migration
 
     public function down()
     {
-        $this->forge->dropColumn('settings','deleted_at');
+        $this->forge->dropColumn('categories','deleted_at');
     }
 }

@@ -20,6 +20,10 @@ class CategoryRepository
     {
         return $this->model->findAll();
     }
+    // get all with delected
+    public function getAll(){
+        return $this->model->withDeleted()->findAll();
+    }
     public function find($id)
     {
         return $this->model->find($id);
@@ -77,5 +81,67 @@ class CategoryRepository
 
         $query = $builder->get();
         return $query->getNumRows() > 0;
+    }
+
+    public function findNameById($id){
+        return $this->model->select('name')->find($id)['name'] ?? null ;
+    }
+
+    // datatable
+    public function countAll($showDeleted = true)
+    {
+        $builder = $this->model->builder();
+
+        if (!$showDeleted) {
+            $builder->where('deleted_at', null);
+        }
+
+        return $builder->countAllResults();
+    }
+    public function countFiltered($searchValue = '', $showDeleted = true)
+    {
+        $builder = $this->model->builder();
+
+        if (!$showDeleted) {
+            $builder->where('deleted_at', null);
+        }
+
+        if ($searchValue !== '') {
+            $builder->groupStart()
+                ->like('name', $searchValue)
+                ->orLike('slug', $searchValue)
+                ->groupEnd();
+        }
+
+        return $builder->countAllResults();
+    }
+    /**
+     * Lấy danh sách category có join với parent_name
+     */
+    public function getAllWithParent($start, $length, $searchValue = '', $orderColumn = 'id', $orderDir = 'asc', $showDeleted = true)
+    {
+        $builder = $this->model->builder();
+        $builder->select('c.*, p.name AS parent_name')
+            ->from('categories c')
+            ->join('categories p', 'p.id = c.parent_id', 'left');
+
+        if (!$showDeleted) {
+            $builder->where('c.deleted_at', null);
+        }
+
+        if ($searchValue !== '') {
+            $builder->groupStart()
+                ->like('c.name', $searchValue)
+                ->orLike('c.slug', $searchValue)
+                ->groupEnd();
+        }
+
+        $builder->orderBy('c.' . $orderColumn, $orderDir);
+
+        if ($length > 0) {
+            $builder->limit($length, $start);
+        }
+
+        return $builder->get()->getResultArray();
     }
 }

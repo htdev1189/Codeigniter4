@@ -17,15 +17,36 @@ class CategoryService
     {
         return $this->CategoryRepository->all();
     }
+    public function getAll()
+    {
+        return $this->CategoryRepository->getAll();
+    }
     public function getById($id)
     {
-        return $this->CategoryRepository->find2($id);
+        $category =  $this->CategoryRepository->find2($id);
+        if (!$category) {
+            // Nếu không có kết quả, ném exception
+            throw new PageNotFoundException("Không tìm thấy danh mục có ID = {$id}");
+        }
+
+        // Nếu có parent_id => lấy parent name
+        if (!empty($category['parent_id'])) {
+            $category['parent_name'] = $this->CategoryRepository->findNameById($category['parent_id']);
+        } else {
+            $category['parent_name'] = null;
+        }
+
+        return $category;
     }
 
     public function create($data)
     {
         $name = trim($data['name']);
         $slug = slugify($name);
+        $parent_id = $data['parent'];
+        $seo_title = $data['seo_title'];
+        $seo_keyword = $data['seo_keyword'];
+        $seo_des = $data['seo_des'];
 
         // Business logic: ví dụ kiểm tra trùng slug
         $exists = $this->CategoryRepository->findBySlug($slug);
@@ -39,6 +60,10 @@ class CategoryService
             return $this->CategoryRepository->create([
                 'name' => $name,
                 'slug' => $slug,
+                'parent_id' => $parent_id,
+                'seo_title' => $seo_title,
+                'seo_keyword' => $seo_keyword,
+                'seo_des' => $seo_des,
             ]);
         } catch (\Exception $e) {
             throw $e; // Ném lên controller
@@ -101,5 +126,25 @@ class CategoryService
         } catch (DatabaseException $e) {
             throw $e;
         }
+    }
+
+    public function getDataForDataTable($params)
+    {
+        $start       = (int) ($params['start'] ?? 0);
+        $length      = (int) ($params['length'] ?? 10);
+        $searchValue = trim($params['searchValue'] ?? '');
+        $orderColumn = $params['orderColumn'] ?? 'id';
+        $orderDir    = $params['orderDir'] ?? 'asc';
+        $showDeleted = $params['showDeleted'] ?? true;
+
+        $totalRecords = $this->CategoryRepository->countAll($showDeleted);
+        $filteredRecords = $this->CategoryRepository->countFiltered($searchValue, $showDeleted);
+        $categories = $this->CategoryRepository->getAllWithParent($start, $length, $searchValue, $orderColumn, $orderDir, $showDeleted);
+
+        return [
+            'recordsTotal'    => $totalRecords,
+            'recordsFiltered' => $filteredRecords,
+            'data'            => $categories,
+        ];
     }
 }

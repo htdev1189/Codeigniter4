@@ -50,6 +50,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Slug</th>
+                    <th>Parent</th>
                     <th>created_at</th>
                     <th>updated_at</th>
                     <th>action</th>
@@ -94,6 +95,11 @@
             },
             {
                 title: 'Slug'
+            },
+            {
+                title: 'Parent',
+                orderable: false,
+                searchable: false
             },
             {
                 title: 'Created At'

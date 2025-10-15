@@ -39,7 +39,7 @@
                     </a>
                     <ul class="submenu">
                         <li><a href="basic-table.html">All posts</a></li>
-                        <li><a href="datatable.html">Add new</a></li>
+                        <li><a href="<?= route_to('admin.post.create') ?>">Add new</a></li>
                     </ul>
                 </li>
 
