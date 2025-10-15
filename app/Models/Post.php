@@ -8,12 +8,9 @@ class Post extends Model
 {
     protected $table            = 'posts';
     protected $primaryKey       = 'id';
-    protected $useAutoIncrement = true;
-    protected $useSoftDeletes   = true;
-    protected $allowedFields    = [];
-
+    protected $allowedFields    = ['title','slug','content','meta_keywords','meta_description','category_id','featured_image','tags','visibility','created_at', 'updated_at'];
     
-    // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
+    // protected $useSoftDeletes   = true;
     
 }

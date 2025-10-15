@@ -4,6 +4,20 @@ use App\Libraries\CIAuth;
 use App\Models\Setting;
 use App\Models\User;
 
+if (! function_exists('normalizeFilename')) {
+    function normalizeFilename($str)
+    {
+        // Loại bỏ dấu tiếng Việt
+        $str = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str);
+
+        // Loại bỏ ký tự đặc biệt, thay khoảng trắng bằng gạch ngang
+        $str = preg_replace('/[^A-Za-z0-9_\-]/', '-', $str);
+        $str = preg_replace('/-+/', '-', $str); // gom dấu '-' trùng
+        $str = trim($str, '-');
+
+        return strtolower($str);
+    }
+}
 if (! function_exists('get_user')) {
     function get_user()
     {

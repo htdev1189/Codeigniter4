@@ -39,7 +39,9 @@ $routes->group('admin',static function ($routes){
 
         // posts
         $routes->group('post', static function ($routes){
-            $routes->get('new-post', 'PostController::create', ['as' => 'admin.post.create']);
+            $routes->get('list', 'PostController::index', ['as' => 'admin.post.list']);
+            $routes->get('new', 'PostController::create', ['as' => 'admin.post.create']);
+            $routes->post('store', 'PostController::store', ['as' => 'admin.post.store']);
         });
 
 
