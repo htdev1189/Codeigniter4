@@ -39,6 +39,29 @@ class CategoryService
         return $category;
     }
 
+    public function getGroupedCategories()
+    {
+        $categories = $this->CategoryRepository->getAll();
+        $grouped = [];
+
+        foreach ($categories as $cat) {
+            if ($cat['parent_id'] == 0) {
+                $grouped[$cat['id']] = [
+                    'name' => $cat['name'],
+                    'children' => []
+                ];
+            }
+        }
+
+        foreach ($categories as $cat) {
+            if ($cat['parent_id'] != 0 && isset($grouped[$cat['parent_id']])) {
+                $grouped[$cat['parent_id']]['children'][] = $cat;
+            }
+        }
+
+        return $grouped;
+    }
+
     public function create($data)
     {
         $name = trim($data['name']);

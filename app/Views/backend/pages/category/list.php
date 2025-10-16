@@ -13,7 +13,7 @@
 
 <div class="page-header">
     <div class="row">
-        <div class="col-md-12 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="title">
                 <h4>Categories</h4>
             </div>
@@ -27,6 +27,9 @@
                     </li>
                 </ol>
             </nav>
+        </div>
+        <div class="col-md-6 col-sm-12 text-right">
+            <a href="<?= route_to('admin.category.add') ?>" class="btn btn-primary btn-sm">Create new category</a>
         </div>
     </div>
 </div>
@@ -49,7 +52,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Slug</th>
+                    <!-- <th>Slug</th> -->
                     <th>Parent</th>
                     <th>created_at</th>
                     <th>updated_at</th>
@@ -93,9 +96,9 @@
             {
                 title: 'Name'
             },
-            {
-                title: 'Slug'
-            },
+            // {
+            //     title: 'Slug'
+            // },
             {
                 title: 'Parent',
                 orderable: false,

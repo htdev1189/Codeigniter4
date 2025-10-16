@@ -6,6 +6,8 @@ use App\Controllers\BaseController;
 use App\Exceptions\ValidationException;
 use App\Services\CategoryService;
 use App\Services\PostService;
+use CodeIgniter\Database\Exceptions\DatabaseException;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class PostController extends BaseController
@@ -57,7 +59,7 @@ class PostController extends BaseController
 
         // goi service -- co the try catch noi day
         try {
-            $data = $this->request->getPost();
+            $data = $this->request->getPost(); // chỉ truyển qua định dạng text nên muốn truyền dạng fikle qua thi làm bước bên dưới
             /**
              * C:\wamp64\www\CodeIgniter4-4.6.3\system\HTTP\Files\UploadedFile.php
              * này nó sẽ trả về 1 instance của class UploadedFile
@@ -79,6 +81,96 @@ class PostController extends BaseController
             // echo '</pre>';
             // exit; // dừng lại để xem lỗi
             return redirect()->back()->withInput()->with('errors', $e->getMessage());
+        }
+    }
+
+    // edit form
+    public function edit($id)
+    {
+        if ($this->PostService->findById($id)) {
+            return view('backend/pages/post/edit', [
+                'pageTitle' => 'edit post',
+                'post' => $this->PostService->findById($id),
+                'categories' => $this->CategoryService->getAllCategories()
+            ]);
+        } else {
+            return view('backend/error/error-404');
+        }
+    }
+
+    // update post
+    public function update($id)
+    {
+        // validation
+        $rules = [
+            'title' => [
+                'rules' => 'required|is_unique[posts.title,id,' . $id . ']',
+                'errors' => [
+                    'required' => 'Tiêu đề không được để trống',
+                    'is_unique' => 'Tiêu đề đã tồn tại, vui lòng thay đổi lại',
+                ]
+            ]
+        ];
+
+        $file = $this->request->getFile('featured_image');
+        // debug --- 
+        // truong hop bị lỗi do warm server mac dinh upload duoi 2M 
+        //dd($file->getError(), $file->getErrorString());
+        //dd($file->getName(), $file->isValid());
+
+
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
+
+        // chuan bi data de truyen qua service
+        $data = $this->request->getPost();
+        $data['featured_image'] = $this->request->getFile('featured_image');
+
+
+        try {
+            // goi service
+            $this->PostService->update($id, $data);
+            return redirect()->route('admin.post.list')->with('success', 'updated post success');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withInput()->with('CustomException', $e->getErrors());
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('errors', $e->getMessage());
+        }
+    }
+
+    // soft delete
+    public function delete($id)
+    {
+        try {
+            $this->PostService->deletePost($id);
+            return redirect()
+                ->route('admin.post.list')
+                ->with('success', 'Xóa bài viết thành công!');
+        } catch (PageNotFoundException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (DatabaseException $e) {
+            return redirect()->back()->with('error', 'Lỗi cơ sở dữ liệu: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            log_message('critical', $e->getMessage());
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi hệ thống khi xóa.');
+        }
+    }
+    public function restore($id)
+    {
+        try {
+            $this->PostService->restorePost($id);
+            return redirect()
+                ->route('admin.post.list')
+                ->with('success', 'Khôi phục bài viết thành công!');
+        } catch (PageNotFoundException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        } catch (DatabaseException $e) {
+            return redirect()->back()->with('error', 'Lỗi cơ sở dữ liệu: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            log_message('critical', $e->getMessage());
+            return redirect()->back()->with('error', 'Đã xảy ra lỗi hệ thống khi khôi phục.');
         }
     }
 }

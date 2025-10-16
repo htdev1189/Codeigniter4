@@ -4,6 +4,16 @@ use App\Libraries\CIAuth;
 use App\Models\Setting;
 use App\Models\User;
 
+if (! function_exists('shortText')) {
+    function shortText($text, $limit = 50)
+    {
+        if (mb_strlen($text, 'UTF-8') > $limit) {
+            return mb_substr($text, 0, $limit, 'UTF-8') . '...';
+        }
+        return $text;
+    }
+}
+
 if (! function_exists('normalizeFilename')) {
     function normalizeFilename($str)
     {

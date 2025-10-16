@@ -198,7 +198,7 @@ class CategoryController extends BaseController
             $data[] = [
                 $cat['id'],
                 esc($cat['name']),
-                esc($cat['slug']),
+                // esc($cat['slug']),
                 $this->CategoryService->getById($cat['id'])['parent_name'],
                 date('d/m/Y H:i:s', strtotime($cat['created_at'])),
                 $cat['updated_at'] ? date('d/m/Y H:i:s', strtotime($cat['updated_at'])) : '',
@@ -221,7 +221,8 @@ class CategoryController extends BaseController
         // Form thêm category
         return view('backend/pages/category/add', [
             'pageTitle' => 'Create New Category',
-            'categories' => $this->CategoryService->getAll()
+            'categories' => $this->CategoryService->getAll(),
+            'categories2' => $this->CategoryService->getGroupedCategories()
         ]);
     }
 
