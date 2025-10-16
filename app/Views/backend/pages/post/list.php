@@ -25,38 +25,56 @@
         </div>
     </div>
 </div>
-<?php if(!empty($posts)) : ?>
-<div class="card">
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">title</th>
-                        <th scope="col">category</th>
-                        <th scope="col">created_at</th>
-                        <th scope="col">update_at</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($posts as $post) : ?>
-                    <tr>
-                        <th scope="row"><?= $post['id'] ?></th>
-                        <th scope="row"><?= $post['title'] ?></th>
-                        <th scope="row"><?= $post['category_name'] ?></th>
-                        <th scope="row"><?= date('d/m/Y H:i:s',strtotime($post['created_at'])) ?></th>
-                        <th scope="row"><?= date('d/m/Y H:i:s',strtotime($post['updated_at'])) ?></th>
-                        <th scope="row">
-                            <a href="<?= route_to('admin.post.edit', $post['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
-                        </th>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+<?php if (!empty($posts)) : ?>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">title</th>
+                            <th scope="col">category</th>
+                            <th scope="col">created_at</th>
+                            <th scope="col">update_at</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($posts as $post) : ?>
+                            <tr>
+                                <th scope="row"><?= $post['id'] ?></th>
+                                <th scope="row" title="<?= $post['title'] ?>"><?= shortText($post['title'], 20) ?></th>
+                                <th scope="row"><?= $post['category_name'] ?></th>
+                                <th scope="row"><?= date('d/m/Y H:i:s', strtotime($post['created_at'])) ?></th>
+                                <th scope="row"><?= date('d/m/Y H:i:s', strtotime($post['updated_at'])) ?></th>
+                                <th scope="row">
+                                    <a href="<?= route_to('admin.post.edit', $post['id']) ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <?php if ($post['deleted_at'] == null) : ?>
+                                        <form action="<?= route_to('admin.post.delete', $post['id']) ?>"
+                                            method="post"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không')"
+                                            style="display: inline;">
+                                            <?= csrf_field(); ?>
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    <?php endif; ?>
+                                    <?php if ($post['deleted_at'] != null) : ?>
+                                        <form action="<?= route_to('admin.post.restore', $post['id']) ?>"
+                                            method="post"
+                                            onsubmit="return confirm('Bạn có chắc chắn muốn khôi phục bài viết này không')"
+                                            style="display: inline;">
+                                            <?= csrf_field(); ?>
+                                            <button type="submit" class="btn btn-sm btn-success">Restore</button>
+                                        </form>
+                                    <?php endif; ?>
+                                </th>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 <?php endif; ?>
 <?= $this->endSection(); ?>

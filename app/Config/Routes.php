@@ -42,6 +42,10 @@ $routes->group('admin',static function ($routes){
             $routes->get('list', 'PostController::index', ['as' => 'admin.post.list']);
             $routes->get('new', 'PostController::create', ['as' => 'admin.post.create']);
             $routes->post('store', 'PostController::store', ['as' => 'admin.post.store']);
+            $routes->get('edit/(:num)', 'PostController::edit/$1', ['as' => 'admin.post.edit']);
+            $routes->post('update/(:num)', 'PostController::update/$1', ['as' => 'admin.post.update']);
+            $routes->post('delete/(:num)', 'PostController::delete/$1', ['as' => 'admin.post.delete']);
+            $routes->post('restore/(:num)', 'PostController::restore/$1', ['as' => 'admin.post.restore']);
         });
 
 

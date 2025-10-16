@@ -38,7 +38,7 @@
                         <span class="micon bi bi-calendar4-week"></span><span class="mtext">Posts</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="basic-table.html">All posts</a></li>
+                        <li><a href="<?= route_to('admin.post.list') ?>">All posts</a></li>
                         <li><a href="<?= route_to('admin.post.create') ?>">Add new</a></li>
                     </ul>
                 </li>
