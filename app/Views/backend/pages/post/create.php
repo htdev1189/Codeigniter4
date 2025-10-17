@@ -47,7 +47,8 @@
                     </div>
                     <div class="form-group">
                         <label for="">Content</label>
-                        <textarea name="content" id="content" rows="10" class="form-control" placeholder="Enter the content"><?= old('content') ?></textarea>
+                        <!-- <textarea name="content" id="content" rows="10" class="form-control" placeholder="Enter the content"><?= old('content') ?></textarea> -->
+                        <textarea name="content" id="content" class="form-control" placeholder="Enter the content"><?= old('content') ?></textarea>
                     </div>
                 </div>
             </div>
@@ -91,12 +92,12 @@
                     <!-- thumbnail -->
                     <div class="form-group" style="max-width: 250px;">
                         <label for="">Thumbnail</label>
-                        <img onerror="this.attr('src','https\:\/\/placehold.co\/600x400'); " src="<?= old('featured_image') ?>" alt="" id="image_previewer">
+                        <img onerror="this.setAttribute('src','https\:\/\/placehold.co\/600x400'); " src="<?= old('featured_image') ?>" alt="" id="image_previewer">
                     </div>
                     <!-- tags -->
                     <div class="form-group">
                         <label for="">Tags</label>
-                        <input type="text" name="tags" id="tags" class="form-control" data-role="tagsinput" value="<?= old('tags')?>">
+                        <input type="text" name="tags" id="tags" class="form-control" data-role="tagsinput" value="<?= old('tags') ?>">
                     </div>
                     <!-- visibility -->
                     <div class="form-group">
@@ -127,14 +128,35 @@
     rel="stylesheet"
     type="text/css"
     href=<?= base_url('backend/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') ?> />
+<!-- <link rel="stylesheet" href="<?= base_url('backend/ckeditor5/ckeditor5.css') ?>"> -->
 <style>
-    .bootstrap-tagsinput{display: block;}
+    .bootstrap-tagsinput {
+        display: block;
+    }
 </style>
 <?= $this->endsection() ?>
 
 <?= $this->section('script') ?>
 <!-- bootstrap-tagsinput js -->
 <script src=<?= base_url('backend/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') ?>></script>
+
+<!-- ckeditor -->
+<!-- <script src="<?= base_url('backend/ckeditor5/ckeditor5.js') ?>"></script> -->
+<script src="<?= base_url('backend/ckeditor4/ckeditor.js') ?>"></script>
+
+<script>
+    // Replace the <textarea id="editor1"> with a CKEditor 4
+    // instance, using default configuration.
+    // CKEDITOR.replace('content');
+    CKEDITOR.replace('content', {
+        versionCheck: false,
+        // đây là khi click vào nút choose file trong tab Upload
+        // filebrowserBrowseUrl: '<?= route_to('admin.upload.form') ?>',
+        filebrowserBrowseUrl: '<?= route_to('admin.upload.browse') ?>',
+        // đây là khi ấn vào nút browser server trong ckeditor tab Image Info
+        filebrowserUploadUrl: '<?= route_to('admin.upload.handler') ?>'
+    });
+</script>
 
 <script>
     $('#featured_image').on('change', function(e) {

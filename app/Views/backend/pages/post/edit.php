@@ -147,6 +147,18 @@
 <!-- bootstrap-tagsinput js -->
 <script src=<?= base_url('backend/src/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js') ?>></script>
 
+<script src="<?= base_url('backend/ckeditor4/ckeditor.js') ?>"></script>
+
+<script>
+    // Replace the <textarea id="editor1"> with a CKEditor 4
+    // instance, using default configuration.
+    // CKEDITOR.replace('content');
+    CKEDITOR.replace('content', {
+        versionCheck: false
+    });
+</script>
+
+
 <script>
     $('#featured_image').on('change', function(e) {
         // o day chi co 1 file
