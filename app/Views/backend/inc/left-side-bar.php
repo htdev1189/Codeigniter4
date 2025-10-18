@@ -15,7 +15,7 @@
         <div class="sidebar-menu">
             <ul id="accordion-menu">
                 <li>
-                    <a href="<?= route_to('admin.home') ?>" class="dropdown-toggle no-arrow">
+                    <a href="<?= route_to('admin.home') ?>" class="dropdown-toggle no-arrow <?= getName_current_router_name() == 'admin.home' ? 'active' : '' ?>">
                         <span class="micon bi bi-house"></span><span class="mtext">Home</span>
                     </a>
                 </li>
@@ -29,8 +29,8 @@
                         <span class="micon bi bi-calendar4-week"></span><span class="mtext">Categories</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= route_to('admin.category.list') ?>">All category</a></li>
-                        <li><a href="<?= route_to('admin.category.add') ?>">Add category</a></li>
+                        <li><a href="<?= route_to('admin.category.list') ?>" <?= getName_current_router_name() == 'admin.category.list' ? 'class="active"' : '' ?>>All category</a></li>
+                        <li><a href="<?= route_to('admin.category.add') ?>" <?= getName_current_router_name() == 'admin.category.add' ? 'class="active"' : '' ?>>Add category</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -38,8 +38,8 @@
                         <span class="micon bi bi-calendar4-week"></span><span class="mtext">Posts</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= route_to('admin.post.list') ?>">All posts</a></li>
-                        <li><a href="<?= route_to('admin.post.create') ?>">Add new</a></li>
+                        <li><a href="<?= route_to('admin.post.list') ?>" <?= getName_current_router_name() == 'admin.post.list' ? 'class="active"' : '' ?>>All posts</a></li>
+                        <li><a href="<?= route_to('admin.post.create') ?>" <?= getName_current_router_name() == 'admin.post.create' ? 'class="active"' : '' ?>>Add new</a></li>
                     </ul>
                 </li>
 
@@ -53,7 +53,7 @@
                 <li>
                     <a
                         href="<?= route_to('admin.profile') ?>"
-                        class="dropdown-toggle no-arrow">
+                        class="dropdown-toggle no-arrow <?= getName_current_router_name() == 'admin.profile' ? 'active' : '' ?>">
                         <span class="micon bi bi-layout-text-window-reverse"></span>
                         <span class="mtext">Profile</span>
                     </a>
@@ -61,7 +61,7 @@
                 <li>
                     <a
                         href="<?= route_to('admin.setting') ?>"
-                        class="dropdown-toggle no-arrow">
+                        class="dropdown-toggle no-arrow <?= getName_current_router_name() == 'admin.setting' ? 'active' : '' ?>">
                         <span class="micon bi bi-layout-text-window-reverse"></span>
                         <span class="mtext">Setting</span>
                     </a>
