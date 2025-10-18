@@ -4,6 +4,14 @@ use App\Libraries\CIAuth;
 use App\Models\Setting;
 use App\Models\User;
 
+// get current router name
+if (!function_exists("getName_current_router_name")) {
+    function getName_current_router_name(){
+        $router = service("router");
+        return $router->getMatchedRouteOptions()['as'];
+    }
+}
+
 if (! function_exists('shortText')) {
     function shortText($text, $limit = 50)
     {
