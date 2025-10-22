@@ -71,10 +71,31 @@
                                 </th>
                             </tr>
                         <?php endforeach; ?>
+
                     </tbody>
                 </table>
+
+                <!-- Pagination -->
+
+                <!-- su dung template mac dinh -->
+                <!-- <div class="pagination">
+                    <?php //$pager->links() 
+                    ?>
+                </div> -->
+
+
+
             </div>
         </div>
     </div>
+
+
+    <!-- su dung custom -->
+    <?= $pager->links('posts', 'custom_pager') ?>
+
+
 <?php endif; ?>
+
+<!-- <pre><?php //print_r($pager, true) 
+            ?></pre> -->
 <?= $this->endSection(); ?>

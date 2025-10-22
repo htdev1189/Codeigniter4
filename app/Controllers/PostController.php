@@ -27,9 +27,12 @@ class PostController extends BaseController
 
     public function index()
     {
+        $perPage = 1;
+        $result = $this->PostService->getAll($perPage);
         $data = [
-            'pageTitle' => 'list all posts',
-            'posts' => $this->PostService->getAll()
+            'pageTitle' => 'Danh sách bài viết',
+            'posts' => $result['posts'],
+            'pager' => $result['pager']
         ];
         return view('backend/pages/post/list', $data);
     }
