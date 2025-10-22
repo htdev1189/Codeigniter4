@@ -13,13 +13,22 @@ class PostRepository
     }
 
     // Lấy danh sách bài viết kèm tên danh mục
-    public function getAllWithCategory()
+    public function getAllWithCategory($perPage = 10)
     {
-        return $this->postModel
+        $posts = $this->postModel
             ->select('posts.*, categories.name AS category_name')
             ->join('categories', 'categories.id = posts.category_id', 'left')
             ->withDeleted() // find all
-            ->findAll();
+            ->paginate($perPage, 'posts'); // 👈 thêm group 'posts'
+        return [
+            'posts' => $posts,
+            'pager' => $this->postModel->pager
+        ];
+    }
+
+    public function pager()
+    {
+        return $this->postModel->pager;
     }
 
     public function create(array $data)

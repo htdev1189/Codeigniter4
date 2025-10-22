@@ -80,19 +80,26 @@ class PostService
         $data['slug'] = $slug;
         return $this->PostRepo->create($data);
     }
-    public function getAll()
+    public function getAll($perPage = 10)
     {
-        $posts = $this->PostRepo->getAllWithCategory();
 
-        // Có thể xử lý thêm logic tại đây (nếu cần)
+        $result = $this->PostRepo->getAllWithCategory($perPage);
+        $posts = $result['posts'];
+
+        // xử lý thêm nếu cần
         foreach ($posts as &$post) {
             if (empty($post['category_name'])) {
                 $post['category_name'] = 'Chưa phân loại';
             }
         }
-
-        return $posts;
+        return $result; // trả cả posts + pager
     }
+
+    public function pager()
+    {
+        return $this->PostRepo->pager();
+    }
+
     public function findByID($id)
     {
         return $this->PostRepo->find($id);
@@ -149,10 +156,12 @@ class PostService
         return $this->PostRepo->updatePost($id, $data);
     }
 
-    public function deletePost($id){
+    public function deletePost($id)
+    {
         $this->PostRepo->deletePost($id);
     }
-    public function restorePost($id){
+    public function restorePost($id)
+    {
         $this->PostRepo->restorePost($id);
     }
 }
