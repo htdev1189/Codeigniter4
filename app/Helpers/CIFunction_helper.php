@@ -3,6 +3,168 @@
 use App\Libraries\CIAuth;
 use App\Models\Setting;
 use App\Models\User;
+use Carbon\Carbon;
+
+/**
+ * Category helper functions
+ */
+
+// get siderbar categories
+if (! function_exists("get_sidebar_categories")) {
+    function get_sidebar_categories()
+    {
+        $categoryModel = new \App\Models\Category();
+        $categories = $categoryModel->asObject()
+            ->where('deleted_at', null)
+            ->where('parent_id', 0)
+            ->orderBy('name', 'ASC')
+            ->get()->getResult(); // trả về mảng object
+        return $categories;
+    }
+}
+
+if (!function_exists('get_all_child_category_ids')) {
+    function get_all_child_category_ids($categoryId)
+    {
+        $categoryModel = new \App\Models\Category();
+
+        // Lấy danh sách con trực tiếp
+        $children = $categoryModel->where('parent_id', $categoryId)->findAll();
+
+        $ids = [$categoryId]; // Bắt đầu với chính category hiện tại
+
+        foreach ($children as $child) {
+            // Đệ quy để lấy các con của con
+            $ids = array_merge($ids, get_all_child_category_ids($child['id']));
+        }
+
+        return $ids;
+    }
+}
+
+
+// count post in category
+// if (! function_exists("count_posts_by_category")) {
+//     function count_posts_by_category($categoryId)
+//     {
+//         $postModel = new \App\Models\Post();
+//         $posts = $postModel->asObject()
+//             ->where('deleted_at', null)
+//             ->where('visibility', 1)
+//             ->where('category_id', $categoryId)
+//             ->orderBy('created_at', 'DESC')
+//             ->get()->getResult(); // trả về mảng object
+//         return count($posts);
+//     }
+// }
+
+// su dung de quy
+if (!function_exists('count_posts_by_category')) {
+    function count_posts_by_category($categoryId)
+    {
+        $postModel = new \App\Models\Post();
+        $allCategoryIds = get_all_child_category_ids($categoryId);
+
+        $posts = $postModel
+            ->where('deleted_at', null)
+            ->where('visibility', 1)
+            ->whereIn('category_id', $allCategoryIds)
+            ->findAll();
+
+        return count($posts);
+    }
+}
+
+
+/**
+ * Post helper functions
+ * 
+ */
+
+// random post
+if (! function_exists("get_random_posts")) {
+    function get_random_posts($limit = 2)
+    {
+        $postModel = new \App\Models\Post();
+        $posts = $postModel->asObject()
+            ->where('deleted_at', null)
+            ->where('visibility', 1)
+            ->orderBy('RAND()')
+            ->limit($limit)
+            ->get()->getResult(); // trả về mảng object
+        return $posts;
+    }
+}
+
+// lay 6 bao viet theo thu tu moi nhat
+if (! function_exists("get_posts")) {
+    function get_posts($limit = 6)
+    {
+        $postModel = new \App\Models\Post();
+        $posts = $postModel->asObject()
+            ->where('deleted_at', null)
+            ->where('visibility', 1)
+            ->orderBy('created_at', 'DESC')
+            ->limit($limit,1)
+            ->get()->getResult(); // trả về mảng object
+        return $posts;
+    }
+}
+
+// lay danh sach lastest post
+if (! function_exists("get_latest_posts")) {
+    function get_latest_posts()
+    {
+        $postModel = new \App\Models\Post();
+        $latestPosts = $postModel->asObject()
+            ->where('deleted_at', null)
+            ->where('visibility', 1)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        return $latestPosts; // ojbect
+    }
+}
+
+
+// gioi han content
+if (! function_exists("limit_content")) {
+    function limit_content($content, $limit = 100)
+    {
+        $content = strip_tags($content);
+        if (strlen($content) <= $limit) {
+            return $content;
+        } else {
+            $truncated = substr($content, 0, $limit);
+            $lastSpace = strrpos($truncated, ' ');
+            if ($lastSpace !== false) {
+                $truncated = substr($truncated, 0, $lastSpace);
+            }
+            return $truncated . '...';
+        }
+    }
+}
+
+// tinh toan thoi gian doc
+if (! function_exists("get_reading_time")) {
+    function get_reading_time($content, $wpm = 200)
+    {
+        // 200 : words per minute
+        $wordCount = str_word_count(strip_tags($content));
+        $readingTimeMinutes = ceil($wordCount / $wpm);
+        return $readingTimeMinutes <= 1 ? "1 minute read" : $readingTimeMinutes . " minutes read";
+    }
+}
+
+// date format helper
+if (! function_exists('formatDate')) {
+    function formatDate($dateString, $format = 'Y-m-d H:i:s')
+    {
+        $date = Carbon::parse($dateString);
+        return $date->format($format);
+        // $date = new DateTime($dateString);
+        // return $date->format($format);
+    }
+}
 
 // get current router name
 if (!function_exists("getName_current_router_name")) {
