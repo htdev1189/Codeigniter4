@@ -18,7 +18,7 @@
                     </li>
                     <?php foreach (get_categories() as $parent_cat) : ?>
                         <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="<?= route_to('blog.category.read', $parent_cat->slug) ?>" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?php if (count(get_categories($parent_cat->id)) > 0) { ?> data-toggle="dropdown" <?php } ?> aria-haspopup="true" aria-expanded="false">
                                 <?= $parent_cat->name ?>
                             </a>
                             <?php if (count(get_categories($parent_cat->id)) > 0): ?>

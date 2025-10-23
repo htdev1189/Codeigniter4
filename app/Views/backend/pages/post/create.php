@@ -149,6 +149,9 @@
     // instance, using default configuration.
     // CKEDITOR.replace('content');
     CKEDITOR.replace('content', {
+        allowedContent: true, // Cho phép mọi thẻ HTML
+        extraPlugins: 'codesnippet', // Kích hoạt plugin code
+        codeSnippet_theme: 'monokai_sublime',
         versionCheck: false,
         // đây là khi click vào nút choose file trong tab Upload
         // filebrowserBrowseUrl: '<?= route_to('admin.upload.form') ?>',

@@ -17,6 +17,10 @@ class BlogController extends BaseController
     }
 
     public function readPost($slug){
-
+        $data = [
+            "pageTitle" => "Read Post Page",
+            "slug" => $slug,
+        ];
+        return view('frontend/pages/article', $data);
     }
 }

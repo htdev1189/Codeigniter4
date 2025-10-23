@@ -32,3 +32,17 @@ if (function_exists('get_categories') === false) {
         return $categories;
     }
 }
+
+// get post by slug
+if (function_exists('get_post_by_slug') === false) {
+    function get_post_by_slug($slug)
+    {
+        $postModel = new \App\Models\Post();
+        $post = $postModel->asObject()
+            ->where('deleted_at', null)
+            ->where('slug', $slug)
+            ->first();
+        return $post;
+    }
+}
+
