@@ -5,7 +5,11 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
+
+// frontend route
+$routes->get('/', 'BlogController::index', ['as'=> 'blog.home']);
+$routes->get('post/(:any)', 'BlogController::readPost/$1', ['as' => 'blog.post.read']);
+$routes->get('category/(:any)', 'BlogController::readCat/$1', ['as' => 'blog.category.read']);
 
 // admin route group
 $routes->group('admin', static function ($routes) {
