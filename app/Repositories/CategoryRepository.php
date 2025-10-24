@@ -68,6 +68,10 @@ class CategoryRepository
         return $this->model->update($id, ['deleted_at' => null]);
     }
 
+    public function getBySlug($slug){
+        return $this->model->where('slug', $slug)->first();
+    }
+
     public function existsSlug($slug, $excludeId = null)
     {
         $builder = $this->model;

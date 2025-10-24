@@ -42,6 +42,48 @@ if (!function_exists('get_all_child_category_ids')) {
     }
 }
 
+// lấy đệ quy id cah theo id con
+if (!function_exists('get_all_parent_category_ids')) {
+    function get_all_parent_category_ids($categoryId)
+    {
+        $categoryModel = new \App\Models\Category();
+
+        $ids = [$categoryId]; // Bắt đầu với chính category hiện tại
+
+        $category = $categoryModel->find($categoryId);
+        if ($category && $category['parent_id'] != 0) {
+            // Đệ quy để lấy các cha
+            $ids = array_merge($ids, get_all_parent_category_ids($category['parent_id']));
+        }
+
+        return array_reverse($ids);
+    }
+}   
+
+if (!function_exists('get_all_parent_categories')) {
+    function get_all_parent_categories($categoryId)
+    {
+        $categoryModel = new \App\Models\Category();
+
+        $categories = [];
+
+        $category = $categoryModel->find($categoryId);
+        if ($category) {
+            $categories[] = $category; // thêm chính nó vào danh sách
+
+            if ($category['parent_id'] != 0) {
+                // đệ quy thêm cha của nó
+                $parentCategories = get_all_parent_categories($category['parent_id']);
+                $categories = array_merge($categories, $parentCategories);
+            }
+        }
+
+        // Đảo ngược lại để cha -> con
+        return array_reverse($categories);
+    }
+}
+
+
 
 // count post in category
 // if (! function_exists("count_posts_by_category")) {
@@ -69,7 +111,8 @@ if (!function_exists('count_posts_by_category')) {
             ->where('deleted_at', null)
             ->where('visibility', 1)
             ->whereIn('category_id', $allCategoryIds)
-            ->findAll();
+            ->paginate(2);
+            // ->findAll();
 
         return count($posts);
     }

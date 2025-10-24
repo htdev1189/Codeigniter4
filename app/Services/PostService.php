@@ -104,6 +104,10 @@ class PostService
     {
         return $this->PostRepo->find($id);
     }
+    public function findBySlug($slug)
+    {
+        return $this->PostRepo->findBySlug($slug);
+    }
 
     // update post
     public function update($id, $data)

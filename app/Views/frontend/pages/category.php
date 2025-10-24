@@ -21,83 +21,60 @@
 
 <?= $this->endSection(); ?>
 
-
+<!-- content -->
 <?= $this->section('content') ?>
-<div class="row no-gutters-lg">
-    <div class="col-12">
-        <h2 class="section-title">Latest Articles</h2>
-    </div>
-    <div class="col-lg-8 mb-5 mb-lg-0">
-        <div class="row">
-            <!-- bai viet moi nhat -->
-            <?php if (get_latest_posts() != null): ?>
-                <div class="col-12 mb-4">
-                    <article class="card article-card">
-                        <a href="<?= route_to('blog.post.read', get_latest_posts()->slug) ?>">
-                            <div class="card-image">
-                                <!-- <div class="post-info"> <span class="text-uppercase">04 Jun 2021</span> -->
-                                <div class="post-info"> <span class="text-uppercase"><?= formatDate(get_latest_posts()->created_at, 'd M Y') ?></span>
-                                    <span class="text-uppercase"><?= get_reading_time(get_latest_posts()->content) ?></span>
-                                </div>
-                                <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . get_latest_posts()->featured_image) ?>" alt="Post Thumbnail" class="w-100">
-                            </div>
-                        </a>
-                        <div class="card-body px-0 pb-1">
-                            <?php if (get_latest_posts()->tags != ''): ?>
-                                <ul class="post-meta mb-2">
-                                    <li>
-                                        <?php foreach (explode(',', get_latest_posts()->tags) as $tag): ?>
-                                            <a href="#!"><?= $tag ?></a>
-                                        <?php endforeach; ?>
-                                    </li>
-                                </ul>
-                            <?php endif; ?>
-                            <h2 class="h1"><a class="post-title" href="<?= route_to('blog.post.read', get_latest_posts()->slug) ?>"><?= get_latest_posts()->title ?></a></h2>
-                            <p class="card-text"><?= limit_content(get_latest_posts()->content, 300) ?></p>
-                            <div class="content"> <a class="read-more-btn" href="<?= route_to('blog.post.read', get_latest_posts()->slug) ?>">Read Full Article</a>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-            <?php endif; ?>
-            <!-- end bai viet moi nhat -->
+<div class="row">
 
-            <!-- 6 bai viet tiep -->
-            <?php if (count(get_posts()) > 0): ?>
-                <?php foreach (get_posts() as $post) : ?>
+    <div class="col-12">
+        <div class="breadcrumbs mb-4">
+            <a href="index.html">Home</a>
+            <?php if (count($breadcrumbs) > 0): ?>
+                <?php foreach ($breadcrumbs as $crumb): ?>
+                    <span class="mx-1">/</span> <a href="<?= route_to('blog.category.read', $crumb['slug']) ?>"><?= $crumb['name'] ?></a>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+        <h1 class="mb-4 border-bottom border-primary d-inline-block"><?= $pageTitle ?></h1>
+    </div>
+
+
+    <div class="col-lg-8 mb-5 mb-lg-0">
+        <?php if (count($posts) > 0) : ?>
+
+            <div class="row">
+                <?php foreach ($posts as $post): ?>
+
                     <div class="col-md-6 mb-4">
                         <article class="card article-card article-card-sm h-100">
                             <a href="<?= route_to('blog.post.read', $post->slug) ?>">
                                 <div class="card-image">
                                     <div class="post-info"> <span class="text-uppercase"><?= formatDate($post->created_at, 'd M Y') ?></span>
-                                        <span class="text-uppercase">2 minutes read</span>
+                                        <span class="text-uppercase"><?= get_reading_time($post->content) ?></span>
                                     </div>
-                                    <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . $post->featured_image) ?>" alt="Post Thumbnail" class="w-100">
+                                    <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . $post->featured_image) ?>" alt="Post Thumbnail" class="w-100" width="420" height="280">
                                 </div>
                             </a>
                             <div class="card-body px-0 pb-0">
-                                <?php if ($post->tags != ''): ?>
-                                    <ul class="post-meta mb-2">
-                                        <li>
-                                            <?php foreach (explode(',', $post->tags) as $tag): ?>
-                                                <a href="#!"><?= $tag ?></a>
-                                            <?php endforeach; ?>
-                                        </li>
-                                    </ul>
-                                <?php endif; ?>
+                                <ul class="post-meta mb-2">
+                                    <li> <a href="#!">travel</a>
+                                        <a href="#!">news</a>
+                                    </li>
+                                </ul>
                                 <h2><a class="post-title" href="<?= route_to('blog.post.read', $post->slug) ?>"><?= $post->title ?></a></h2>
-                                <p class="card-text"><?= limit_content($post->content, 100) ?></p>
+                                <p class="card-text"><?= limit_content($post->meta_description, 100) ?></p>
                                 <div class="content"> <a class="read-more-btn" href="<?= route_to('blog.post.read', $post->slug) ?>">Read Full Article</a>
                                 </div>
                             </div>
                         </article>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            <!-- end 6 bai viet tiep theo -->
 
-        </div>
+                <?php endforeach; ?>
+            </div>
+
+        <?php endif; ?>
     </div>
+
+
     <div class="col-lg-4">
         <div class="widget-blocks">
             <div class="row">
@@ -141,4 +118,11 @@
     </div>
 </div>
 
-<?= $this->endSection() ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+    hljs.highlightAll();
+</script>
+
+
+<?= $this->endSection(); ?>

@@ -46,3 +46,21 @@ if (function_exists('get_post_by_slug') === false) {
     }
 }
 
+// Lay het cac bai viet theo category -- de quy
+if (!function_exists('get_all_posts_by_category')) {
+    function get_all_posts_by_category($categoryId)
+    {
+        $postModel = new \App\Models\Post();
+        $allCategoryIds = get_all_child_category_ids($categoryId);
+
+        $posts = $postModel->asObject()
+            ->where('deleted_at', null)
+            ->where('visibility', 1)
+            ->whereIn('category_id', $allCategoryIds)
+            ->paginate(2);
+            // ->findAll();
+
+        return $posts;
+    }
+}
+

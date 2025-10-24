@@ -26,7 +26,7 @@
 <div class="row">
     <div class="col-lg-8 mb-5 mb-lg-0">
         <article>
-            <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . get_post_by_slug($slug)->featured_image) ?>" alt="Post Thumbnail" class="w-100">
+            <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . get_post_by_slug($post['slug'])->featured_image) ?>" alt="Post Thumbnail" class="w-100">
             <ul class="post-meta mb-2 mt-4">
                 <li>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="margin-right:5px;margin-top:-4px" class="text-dark" viewBox="0 0 16 16">
@@ -36,13 +36,13 @@
                     </svg> <span>29 May, 2021</span>
                 </li>
             </ul>
-            <h1 class="my-3"><?= get_post_by_slug($slug)->title ?></h1>
+            <h1 class="my-3"><?= get_post_by_slug($post['slug'])->title ?></h1>
             <ul class="post-meta mb-4">
                 <li> <a href="/categories/destination">destination</a>
                 </li>
             </ul>
             <div class="content text-left">
-                <?= get_post_by_slug($slug)->content ?>
+                <?= get_post_by_slug($post['slug'])->content ?>
             </div>
         </article>
 
