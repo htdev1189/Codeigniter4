@@ -52,7 +52,7 @@
                                     </li>
                                 </ul>
                             <?php endif; ?>
-                            <h2 class="h1"><a class="post-title" href="article.html"><?= get_latest_posts()->title ?></a></h2>
+                            <h2 class="h1"><a class="post-title" href="<?= route_to('blog.post.read', get_latest_posts()->slug) ?>"><?= get_latest_posts()->title ?></a></h2>
                             <p class="card-text"><?= limit_content(get_latest_posts()->content, 300) ?></p>
                             <div class="content"> <a class="read-more-btn" href="<?= route_to('blog.post.read', get_latest_posts()->slug) ?>">Read Full Article</a>
                             </div>
