@@ -47,7 +47,7 @@
                                 <ul class="post-meta mb-2">
                                     <li>
                                         <?php foreach (explode(',', get_latest_posts()->tags) as $tag): ?>
-                                            <a href="#!"><?= $tag ?></a>
+                                            <a href="<?= route_to('blog.tags',urlencode($tag)) ?>"><?= $tag ?></a>
                                         <?php endforeach; ?>
                                     </li>
                                 </ul>
@@ -85,7 +85,7 @@
                                         </li>
                                     </ul>
                                 <?php endif; ?>
-                                <h2><a class="post-title" href="article.html"><?= $post->title ?></a></h2>
+                                <h2><a class="post-title" href="<?= route_to('blog.post.read', $post->slug) ?>"><?= $post->title ?></a></h2>
                                 <p class="card-text"><?= limit_content($post->content, 100) ?></p>
                                 <div class="content"> <a class="read-more-btn" href="<?= route_to('blog.post.read', $post->slug) ?>">Read Full Article</a>
                                 </div>

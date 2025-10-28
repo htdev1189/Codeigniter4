@@ -39,6 +39,15 @@ class CategoryService
         return $category;
     }
 
+    public function getBySlug($slug){
+        $category = $this->CategoryRepository->getBySlug($slug);
+        if (!$category) {
+            // Nếu không có kết quả, ném exception
+            throw new PageNotFoundException("Không tìm thấy danh mục với slug = {$slug}");
+        }
+        return $category;
+    }
+
     public function getGroupedCategories()
     {
         $categories = $this->CategoryRepository->getAll();

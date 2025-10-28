@@ -67,4 +67,20 @@ class PostRepository
 
         return $this->postModel->update($id, $data);
     }
+
+    // tag
+    public function getByTag($tag)
+    {
+        $posts = $this->postModel->asObject()
+            ->where('visibility', 1)
+            ->where('deleted_at', null)
+            ->like('tags','%'.$tag.'%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(1,'tags');
+
+        return [
+            'posts' => $posts,
+            'pager' => $this->postModel->pager
+        ];
+    }
 }

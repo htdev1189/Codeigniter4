@@ -44,7 +44,7 @@ class PostService
         if ($file && $file->isValid() && !$file->hasMoved()) {
             // dd($file->getClientExtension());
             // validate file --- 
-            $allowed = ['jpg', 'jpeg', 'webp'];
+            $allowed = ['jpg', 'jpeg', 'webp', 'png'];
             if (!in_array($file->getClientExtension(), $allowed)) {
                 $errors['file'] = 'Định dạng file không hợp lệ, vui lòng nhập tên khác.';
             } else {
@@ -103,6 +103,10 @@ class PostService
     public function findByID($id)
     {
         return $this->PostRepo->find($id);
+    }
+    public function findBySlug($slug)
+    {
+        return $this->PostRepo->findBySlug($slug);
     }
 
     // update post
@@ -163,5 +167,10 @@ class PostService
     public function restorePost($id)
     {
         $this->PostRepo->restorePost($id);
+    }
+
+    // tags
+    public function getByTag($tag){
+        return $this->PostRepo->getByTag($tag);
     }
 }
