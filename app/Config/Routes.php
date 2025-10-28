@@ -11,6 +11,7 @@ $routes->get('/', 'BlogController::index', ['as'=> 'blog.home']);
 $routes->get('/404', 'BlogController::page404', ['as'=> 'blog.page404']);
 $routes->get('post/(:any)', 'BlogController::readPost/$1', ['as' => 'blog.post.read']);
 $routes->get('category/(:any)', 'BlogController::readCat/$1', ['as' => 'blog.category.read']);
+$routes->get('tag/(:any)', 'BlogController::readTag/$1', ['as'=> 'blog.tags']);
 
 // admin route group
 $routes->group('admin', static function ($routes) {

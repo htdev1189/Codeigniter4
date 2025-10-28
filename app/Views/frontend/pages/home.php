@@ -47,7 +47,7 @@
                                 <ul class="post-meta mb-2">
                                     <li>
                                         <?php foreach (explode(',', get_latest_posts()->tags) as $tag): ?>
-                                            <a href="#!"><?= $tag ?></a>
+                                            <a href="<?= route_to('blog.tags',urlencode($tag)) ?>"><?= $tag ?></a>
                                         <?php endforeach; ?>
                                     </li>
                                 </ul>

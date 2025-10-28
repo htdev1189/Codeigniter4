@@ -75,11 +75,15 @@
                         <label for="">Category</label>
                         <select name="category_id" id="category_id" class="custom-select form-control">
                             <option value="">Choose ...</option>
-                            <?php foreach ($categories as $cat) : ?>
-                                <option value="<?= $cat['id'] ?>"><?= $cat['name'] ?></option>
+                            <?php foreach ($categories as $cat): ?>
+                                <option value="<?= $cat['id'] ?>"
+                                    <?= old('category_id') == $cat['id'] ? 'selected' : '' ?>>
+                                    <?= esc($cat['name']) ?>
+                                </option>
                             <?php endforeach; ?>
                         </select>
                     </div>
+
 
                     <!-- featured image -->
                     <div class="form-group">
