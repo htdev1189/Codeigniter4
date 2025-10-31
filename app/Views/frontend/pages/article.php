@@ -2,22 +2,22 @@
 <!-- meta -->
 <?= $this->section('page_meta') ?>
 <meta type="robots" content="index, follow">
-<meta name="description" content="<?= get_setting()->blog_description ?>">
-<meta name="keywords" content="<?= get_setting()->blog_keywords ?>">
-<meta name="title" content="<?= get_setting()->blog_title ?>">
-<link rel="canonical" href="<?= base_url() ?>" />
+<meta name="description" content="<?= $post['meta_description'] ?? get_setting()->blog_description ?>">
+<meta name="keywords" content="<?= $post['meta_keywords'] ?? get_setting()->blog_keywords ?>">
+<meta name="title" content="<?= $post['title'] ?? get_setting()->blog_title ?>">
+<link rel="canonical" href="<?= current_url() ?>" />
 
-<meta property="og:title" content="<?= get_setting()->blog_title ?>" />
-<meta property="og:description" content="<?= get_setting()->blog_description ?>" />
+<meta property="og:title" content="<?= $post['title'] ?? get_setting()->blog_title ?>" />
+<meta property="og:description" content="<?= $post['meta_description'] ?? get_setting()->blog_description ?>" />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="<?= base_url() ?>" />
-<meta property="og:image" content="<?= base_url('frontend/images/logo.png') ?>" />
+<meta property="og:url" content="<?= current_url() ?>" />
+<meta property="og:image" content="<?= $post['featured_image'] == '' ? base_url('frontend/images/logo.png') : base_url('uploads/posts/'.$post['featured_image']) ?>" />
 <meta property="og:site_name" content="<?= get_setting()->blog_title ?>" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="<?= get_setting()->blog_title ?>" />
 <meta name="twitter:description" content="<?= get_setting()->blog_description ?>" />
-<meta name="twitter:image" content="<?= base_url('frontend/images/logo.png') ?>" />
+<meta name="twitter:image" content="<?= $post['featured_image'] == '' ? base_url('frontend/images/logo.png') : base_url('uploads/posts/'.$post['featured_image']) ?>" />
 
 <?= $this->endSection(); ?>
 
@@ -51,39 +51,16 @@
         <div class="widget-blocks">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="widget">
-                        <div class="widget-body">
-                            <img loading="lazy" decoding="async" src="<?= base_url('frontend/images/author.jpg') ?>" alt="About Me" class="w-100 author-thumb-sm d-block">
-                            <h2 class="widget-title my-3">Hootan Safiyari</h2>
-                            <p class="mb-3 pb-2">Hello, I’m Hootan Safiyari. A Content writter, Developer and Story teller. Working as a Content writter at CoolTech Agency. Quam nihil …</p> <a href="about.html" class="btn btn-sm btn-outline-primary">Know
-                                More</a>
-                        </div>
-                    </div>
+                    <?= $this->include('frontend/inc/author') ?>
                 </div>
                 <div class="col-lg-12 col-md-6">
-                    <div class="widget">
-                        <h2 class="section-title mb-3">Random Post</h2>
-                        <div class="widget-body">
-                            <div class="widget-list">
-                                <!-- random post -->
-                                <?php if (count(get_random_posts(2))): ?>
-                                    <?php foreach (get_random_posts(2) as $randomPost): ?>
-                                        <a class="media align-items-center" href="<?= route_to('blog.post.read', $randomPost->slug) ?>">
-                                            <img loading="lazy" decoding="async" src="<?= base_url('uploads/posts/' . $randomPost->featured_image) ?>" alt="Post Thumbnail" class="w-100">
-                                            <div class="media-body ml-3">
-                                                <h3 style="margin-top:-5px" title="<?= $randomPost->title ?>"><?= limit_content($randomPost->title, 20) ?></h3>
-                                                <p class="mb-0 small"><?= limit_content($randomPost->content, 50) ?></p>
-                                            </div>
-                                        </a>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-
-                            </div>
-                        </div>
-                    </div>
+                    <?= $this->include('frontend/inc/random-post') ?>
                 </div>
                 <div class="col-lg-12 col-md-6">
                     <?= $this->include('frontend/inc/sidebar_categories') ?>
+                </div>
+                <div class="col-lg-12 col-md-6">
+                    <?= $this->include('frontend/inc/sidebar_tags') ?>
                 </div>
             </div>
         </div>
@@ -93,6 +70,4 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/monokai.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
-
-
 <?= $this->endSection(); ?>

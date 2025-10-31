@@ -132,4 +132,110 @@ class BlogController extends BaseController
     {
         return view('frontend/pages/404');
     }
+
+    // search
+    public function search()
+    {
+        // nhan keyword
+        $keyword = $this->request->getGet('q');
+        if (empty($keyword)) {
+            return redirect()->route('blog.home')->with('error', 'Vui lòng nhập từ khóa tìm kiếm');
+        }
+
+
+        $page = $this->request->getGet('page_search');
+        // Nếu có truyền page_search và nó không hợp lệ thì redirect
+        if ($page !== null && (!is_numeric($page) || $page < 1)) {
+            return redirect()->to(base_url("search?q=" . urlencode($keyword)));
+        }
+
+        // Nếu không có page_tags, gán mặc định là 1
+        $page = $page ? (int)$page : 1;
+
+        $result = $this->postService->search($keyword);
+        $totalPages = $result['pager']->getPageCount('search');
+        if ($page > $totalPages && $totalPages > 0) {
+            return redirect()->to(base_url("search?q=" . urlencode($keyword) . "&page_search={$totalPages}"));
+        }
+
+        $data = [
+            "search" => $keyword,
+            "pageTitle" => "Search: $keyword",
+            "posts" => $result["posts"],
+            "pager" => $result["pager"],
+        ];
+        return view('frontend/pages/search', $data);
+    }
+
+    // contact
+    public function contact()
+    {
+        $data = [
+            "pageTitle" => "Contact Us"
+        ];
+        return view("frontend/pages/contact", $data);
+    }
+
+    // submit contact
+    public function sendContact()
+    {
+        // thiết lập rules
+        $rules = [
+            'name' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Vui lòng nhập họ tên',
+                ]
+            ],
+            'email' => [
+                'rules' => 'required|valid_email',
+                'errors' => [
+                    'required' => 'Vui lòng nhập Email',
+                    'valid_email' => "Vui lòng nhập đúng định dạng email"
+                ]
+            ],
+            'subject' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Vui lòng nhập Subject',
+                ]
+            ],
+            'message' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Vui lòng nhập Message',
+                ]
+            ]
+        ];
+
+        $data = $this->request->getPost(array_keys($rules));
+
+        if (! $this->validateData($data, $rules)) {
+            return redirect()->back()->with('errors', $this->validator->getErrors())->withInput();
+        }
+
+        // Dữ liệu sau khi lấy thành công
+        $data = $this->request->getPost();
+        // thực hiện gửi mail
+
+        // render email body
+        $view = service('renderer');
+        $email_body = $view->setVar('data', $data)->render('frontend/email_temp/contact');
+
+        // mail config
+        $mailConfig = [
+            'mail_from_email' => $data['email'],
+            'mail_from_name' => $data['name'],
+            'mail_to_email' => get_setting()->blog_email,
+            'mail_to_name' => get_setting()->blog_title,
+            'mail_subject' => $data['subject'],
+            'mail_body' => $email_body
+        ];
+        if (sendEmail($mailConfig)) {
+            return redirect()->route('blog.contact')->with('success', 'Thông tin của bạn đã được gửi tới chúng tôi');
+        } else {
+            return redirect()->route('blog.contact')->with('error', 'Đã có lỗi xảy ra vui lòng kiểm tra lại');
+        }
+       
+    }
 }

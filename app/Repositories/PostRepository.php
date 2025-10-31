@@ -83,4 +83,29 @@ class PostRepository
             'pager' => $this->postModel->pager
         ];
     }
+
+    // search
+    public function search($keyword){
+
+        /**
+         * groupStart() === 
+         * SELECT * FROM posts 
+         * WHERE (title LIKE '%huy%' OR slug LIKE '%huy%' OR tags LIKE '%huy%')
+         */
+        $posts = $this->postModel->asObject()
+                ->groupStart()
+                    ->like('title', '%'.$keyword.'%')
+                    ->orLike('slug', '%'.$keyword.'%')
+                    ->orLike('tags', '%'.$keyword.'%')
+                ->groupEnd()
+            ->where('visibility', 1)
+            ->where('deleted_at', null)
+            ->orderBy('created_at', 'desc')
+            ->paginate(2,'search'); // quy định tên để gọi paginate đồng thời thiết lập post 1 page
+
+        return [
+            'posts' => $posts,
+            'pager' => $this->postModel->pager
+        ];
+    }
 }

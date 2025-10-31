@@ -12,6 +12,9 @@ $routes->get('/404', 'BlogController::page404', ['as'=> 'blog.page404']);
 $routes->get('post/(:any)', 'BlogController::readPost/$1', ['as' => 'blog.post.read']);
 $routes->get('category/(:any)', 'BlogController::readCat/$1', ['as' => 'blog.category.read']);
 $routes->get('tag/(:any)', 'BlogController::readTag/$1', ['as'=> 'blog.tags']);
+$routes->get('search', 'BlogController::search', ['as' => 'blog.search']);
+$routes->get('contact', 'BlogController::contact', ['as' => 'blog.contact']);
+$routes->post('contact', 'BlogController::sendContact', ['as' => 'blog.contact.submit']);
 
 // admin route group
 $routes->group('admin', static function ($routes) {

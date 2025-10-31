@@ -1,4 +1,4 @@
-<?php $pager->setSurroundCount(1) ?>
+<?php $pager->setSurroundCount(2) ?>
 <!-- 
         1  |  2  |  3  |  4  |  5
         Trang hiện tại là 3, vậy 2 bên sẽ có 2 nếu khai báo  setSurroundCount(2)

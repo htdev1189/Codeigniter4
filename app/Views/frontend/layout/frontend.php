@@ -31,6 +31,8 @@
 
     <!-- # CSS Plugins -->
     <link rel="stylesheet" href="<?= base_url('frontend/plugins/bootstrap/bootstrap.min.css') ?>">
+    <!-- Toast -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <!-- # Main Style Sheet -->
     <link rel="stylesheet" href="<?= base_url('frontend/css/style.css') ?>">
@@ -55,8 +57,30 @@
     <script src="<?= base_url('frontend/plugins/jquery/jquery.min.js') ?>"></script>
     <script src="<?= base_url('frontend/plugins/bootstrap/bootstrap.min.js') ?>"></script>
 
+    <!-- toast -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <!-- Main Script -->
-    <script <?= base_url('frontend/js/script.js') ?>"></script>
+    <script src="<?= base_url('frontend/js/script.js') ?>"></script>
+
+
+    <script>
+        <?php if (session()->has('error')): ?>
+            toastr.error("<?= esc(session('error')) ?>");
+        <?php endif; ?>
+
+        <?php if (session()->has('success')): ?>
+            toastr.success("<?= esc(session('success')) ?>");
+        <?php endif; ?>
+
+        <?php if (session()->has('info')): ?>
+            toastr.info("<?= esc(session('info')) ?>");
+        <?php endif; ?>
+
+        <?php if (session()->has('warning')): ?>
+            toastr.warning("<?= esc(session('warning')) ?>");
+        <?php endif; ?>
+    </script>
 
 </body>
 

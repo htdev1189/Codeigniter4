@@ -9,8 +9,8 @@
                     data-target="#navigation"> <span class="navbar-toggler-icon"></span>
                 </button>
             </div>
-            <form action="#!" class="search order-lg-3 order-md-2 order-3 ml-auto">
-                <input id="search-query" name="s" type="search" placeholder="Search..." autocomplete="off">
+            <form action="<?= route_to('blog.search') ?>" method="get" class="search order-lg-3 order-md-2 order-3 ml-auto">
+                <input id="search-query" name="q" type="search" placeholder="Search..." autocomplete="off" value="<?= isset($search) ? $search : '' ?>">
             </form>
             <div class="collapse navbar-collapse text-center order-lg-2 order-4" id="navigation">
                 <ul class="navbar-nav mx-auto mt-3 mt-lg-0">
@@ -30,7 +30,7 @@
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
-                    <li class="nav-item"> <a class="nav-link" href="contact.html">Contact</a>
+                    <li class="nav-item"> <a class="nav-link" href="<?= route_to('blog.contact') ?>">Contact</a>
                     </li>
                 </ul>
             </div>

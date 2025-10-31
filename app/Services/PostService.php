@@ -173,4 +173,9 @@ class PostService
     public function getByTag($tag){
         return $this->PostRepo->getByTag($tag);
     }
+
+    // search
+    public function search($keyword){
+        return $this->PostRepo->search($keyword);
+    }
 }

@@ -9,7 +9,7 @@ if (! function_exists('sendEmail')) {
     {
         $mail = new PHPMailer(true);
         try {
-            // $mail->SMTPDebug = 1;  
+            $mail->SMTPDebug = 1;  
             $mail->isSMTP();
             $mail->Host       = getenv('EMAIL_HOST');
             $mail->SMTPAuth   = true;
