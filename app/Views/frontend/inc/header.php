@@ -2,7 +2,8 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light px-0">
             <a class="navbar-brand order-1 py-0" href="index.html">
-                <img loading="prelaod" decoding="async" class="img-fluid" src="<?= base_url('frontend/images/logo.png') ?>" alt="Reporter Hugo">
+
+            <img loading="preload" decoding="async" class="img-fluid dark-logo" src="<?= base_url('images/setting/' . get_setting()->blog_logo) ?>" alt="" />
             </a>
             <div class="navbar-actions order-3 ml-0 ml-md-4">
                 <button aria-label="navbar toggler" class="navbar-toggler border-0" type="button" data-toggle="collapse"
